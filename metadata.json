@@ -1,0 +1,6 @@
+{
+  "name": "Brenda García - Asesora PPR",
+  "description": "Landing page para agendar asesorías de planeación sobre PPR (Planes Personales de Retiro) de forma fácil.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
