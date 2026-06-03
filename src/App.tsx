@@ -73,7 +73,7 @@ export default function App() {
   }
 
   return (
-    <div className="relative min-h-screen bg-white text-slate-900 selection:bg-brand-blue-500 selection:text-white">
+    <div className="relative min-h-screen w-full max-w-full overflow-x-hidden bg-white text-slate-900 selection:bg-brand-blue-500 selection:text-white">
       {/* Background radial atmosphere */}
       <div className="absolute top-0 left-1/2 w-[1000px] h-[600px] bg-brand-blue-500/5 rounded-full blur-[140px] pointer-events-none -translate-x-1/2" />
 
