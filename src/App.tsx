@@ -11,11 +11,22 @@ import FaqSection from './components/FaqSection';
 import Footer from './components/Footer';
 import AdminDashboard from './components/AdminDashboard';
 import WhatsAppFloatingButton from './components/WhatsAppFloatingButton';
+import GraciasPage from './components/GraciasPage';
 import { LeadRegistration } from './types';
 
 export default function App() {
   const [leads, setLeads] = useState<LeadRegistration[]>([]);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+
+  // Sync with browser history push state
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPath(window.location.pathname);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // Setup scrolling refs
   const headerFormRef = useRef<HTMLDivElement | null>(null);
@@ -56,6 +67,10 @@ export default function App() {
   const scrollToFaq = () => {
     faqRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
+
+  if (currentPath === '/gracias') {
+    return <GraciasPage />;
+  }
 
   return (
     <div className="relative min-h-screen bg-white text-slate-900 selection:bg-brand-blue-500 selection:text-white">

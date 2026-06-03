@@ -36,20 +36,20 @@ export default function Footer({ onScrollToFaq, onOpenDashboard, leadsCount }: F
             <span className="text-[10px] font-mono tracking-widest text-[#00157F]/60 block uppercase font-bold">Contacto</span>
             <div className="space-y-1.5 text-xs text-brand-blue-605">
               <a 
-                href="https://wa.me/5215512345678" 
+                href="https://wa.me/527293080780" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="flex items-center space-x-2 hover:text-[#0046EB] transition text-brand-blue-600"
               >
                 <Phone className="w-3.5 h-3.5 text-brand-blue-500 shrink-0" />
-                <span>+52 55 1234 5678</span>
+                <span>+52 729 308 0780</span>
               </a>
               <a 
-                href="mailto:contacto@brendagarcia.mx" 
+                href="mailto:asesoria@brendagarcia.mx" 
                 className="flex items-center space-x-2 hover:text-[#0046EB] transition text-brand-blue-600"
               >
                 <Mail className="w-3.5 h-3.5 text-brand-blue-500 shrink-0" />
-                <span>contacto@brendagarcia.mx</span>
+                <span>asesoria@brendagarcia.mx</span>
               </a>
             </div>
           </div>

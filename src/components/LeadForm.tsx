@@ -50,7 +50,7 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
     if (!phone) {
       tempErrors.phone = 'El teléfono es requerido';
     } else if (cleanPhone.length < 10) {
-      tempErrors.phone = 'Ingresa un número de 10 dígitos (ej. 5512345678)';
+      tempErrors.phone = 'Ingresa un número de 10 dígitos (ej. 7293080780)';
     }
 
     // Email regex
@@ -181,6 +181,10 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
     saveLeadToLocalStorage(finalLead);
     setRegisteredLead(finalLead);
     setIsSubmitted(true);
+    
+    // Smooth redirect to /gracias thank-you subpage
+    window.history.pushState({}, '', '/gracias');
+    window.dispatchEvent(new Event('popstate'));
     });
   };
 
@@ -221,7 +225,7 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
 
   // WhatsApp redirection for disqualified advisors
   const generateWaRedirectLink = (reason: 'age' | 'history' | 'budget') => {
-    const defaultNumber = '5215512345678'; // Simulated professional text number
+    const defaultNumber = '527293080780'; // Simulated professional text number
     let text = '';
     if (reason === 'age') {
       text = `Hola Brenda! Vi que mi perfil tiene condiciones particulares por mi rango de edad (mayor de 50). Mi nombre es ${name}. Quisiera consultar mis opciones en privado.`;
@@ -235,7 +239,7 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
 
   // Successful register WhatsApp confirm link
   const generateSuccessWaLink = () => {
-    const defaultNumber = '5215512345678';
+    const defaultNumber = '527293080780';
     const timeWord = formatTimeSlot(selectedTimeSlot as LeadRegistration['selectedTimeSlot']);
     const text = `Hola Brenda! Acabo de agendar mi Asesoría de Retiro en el horario de ${timeWord}. Mi nombre es ${name} y mi WhatsApp registrado es ${phone}. Quisiera confirmar mi videollamada para mi sesión. ¡Muchas gracias!`;
     return `https://wa.me/${defaultNumber}?text=${encodeURIComponent(text)}`;
@@ -303,22 +307,8 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
           </p>
         </div>
 
-        <div className="pt-2 flex flex-col space-y-3">
-          <a
-            href={generateWaRedirectLink(isDisqualified)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full bg-[#25d366] hover:bg-[#20ba56] text-white font-display font-semibold py-3 px-5 rounded-full transition-all duration-200 flex items-center justify-center space-x-2.5 shadow-md"
-          >
-            <MessageSquare className="w-5 h-5 fill-current" />
-            <span>Consultar alternativas en WhatsApp</span>
-          </a>
-          <button
-            onClick={resetForm}
-            className="text-xs text-slate-400 hover:text-slate-600 underline transition-colors"
-          >
-            Regresar e intentar con otros datos
-          </button>
+        <div className="pt-2 text-xs text-slate-400 italic font-sans leading-relaxed">
+          Tus respuestas han sido guardadas de forma segura. Si tienes alguna duda, puedes contactar al soporte administrativo.
         </div>
       </motion.div>
     );
@@ -540,7 +530,7 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
                       setPhone(e.target.value);
                       if (errors.phone) setErrors(prev => ({ ...prev, phone: '' }));
                     }}
-                    placeholder="Ej. 5512345678"
+                    placeholder="Ej. 7293080780"
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 pl-11 pr-4 text-slate-900 text-sm focus:outline-none focus:border-brand-blue-500 focus:bg-white placeholder-slate-400 transition"
                   />
                 </div>
@@ -755,36 +745,61 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
                     { value: 'lunes_11am', day: 'Lunes', time: '11:00 AM (Central Mx)' },
                     { value: 'martes_6pm', day: 'Martes', time: '6:00 PM (Central Mx)' },
                     { value: 'jueves_6pm', day: 'Jueves', time: '6:00 PM (Central Mx)' }
-                  ].map((option) => (
-                    <button
-                      key={option.value}
-                      type="button"
-                      onClick={() => {
-                        setSelectedTimeSlot(option.value as LeadRegistration['selectedTimeSlot']);
-                        if (errors.selectedTimeSlot) setErrors(prev => ({ ...prev, selectedTimeSlot: '' }));
-                      }}
-                      className={`w-full text-left p-3.5 rounded-xl border transition-all duration-150 text-sm font-medium ${
-                        selectedTimeSlot === option.value
-                          ? 'bg-brand-blue-50/70 border-brand-blue-500 text-brand-blue-700 shadow-sm font-bold'
-                          : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-100/30'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
-                          <Clock className={`w-4 h-4 ${selectedTimeSlot === option.value ? 'text-brand-blue-600' : 'text-slate-400'}`} />
-                          <div>
-                            <span className="block text-sm font-semibold text-slate-900">{option.day}</span>
-                            <span className="block text-xs text-slate-500">{option.time}</span>
+                  ].map((option) => {
+                    // Calculate exact dynamic date label for the weekday
+                    let targetDay = 1; // 1 = Monday
+                    let targetHour = 11;
+                    if (option.value === 'martes_6pm') {
+                      targetDay = 2; // Tuesday
+                      targetHour = 18;
+                    } else if (option.value === 'jueves_6pm') {
+                      targetDay = 4; // Thursday
+                      targetHour = 18;
+                    }
+                    const now = new Date();
+                    const resultDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    const currentDay = resultDate.getDay();
+                    let daysToAdd = (targetDay - currentDay + 7) % 7;
+                    if (daysToAdd === 0 && now.getHours() >= targetHour) {
+                      daysToAdd = 7;
+                    }
+                    resultDate.setDate(resultDate.getDate() + daysToAdd);
+                    const dayNum = resultDate.getDate();
+                    const monthRaw = resultDate.toLocaleDateString('es-MX', { month: 'long' });
+                    const formattedMonth = monthRaw.charAt(0).toUpperCase() + monthRaw.slice(1);
+                    const dynamicDayLabel = `${option.day} ${dayNum} de ${formattedMonth}`;
+
+                    return (
+                      <button
+                        key={option.value}
+                        type="button"
+                        onClick={() => {
+                          setSelectedTimeSlot(option.value as LeadRegistration['selectedTimeSlot']);
+                          if (errors.selectedTimeSlot) setErrors(prev => ({ ...prev, selectedTimeSlot: '' }));
+                        }}
+                        className={`w-full text-left p-3.5 rounded-xl border transition-all duration-150 text-sm font-medium ${
+                          selectedTimeSlot === option.value
+                            ? 'bg-brand-blue-50/70 border-brand-blue-500 text-brand-blue-700 shadow-sm font-bold'
+                            : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-100/30'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-3">
+                            <Clock className={`w-4 h-4 ${selectedTimeSlot === option.value ? 'text-brand-blue-600' : 'text-slate-400'}`} />
+                            <div>
+                              <span className="block text-sm font-bold text-slate-900">{dynamicDayLabel}</span>
+                              <span className="block text-xs text-slate-500">{option.time}</span>
+                            </div>
+                          </div>
+                          <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                            selectedTimeSlot === option.value ? 'border-brand-blue-400 bg-brand-blue-500' : 'border-slate-300'
+                          }`}>
+                            {selectedTimeSlot === option.value && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                           </div>
                         </div>
-                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
-                          selectedTimeSlot === option.value ? 'border-brand-blue-400 bg-brand-blue-500' : 'border-slate-300'
-                        }`}>
-                          {selectedTimeSlot === option.value && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-                        </div>
-                      </div>
-                    </button>
-                  ))}
+                      </button>
+                    );
+                  })}
                 </div>
                 {errors.selectedTimeSlot && <p className="text-rose-600 text-xs mt-1 font-semibold">{errors.selectedTimeSlot}</p>}
               </div>

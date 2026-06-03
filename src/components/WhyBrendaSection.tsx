@@ -20,20 +20,20 @@ export default function WhyBrendaSection({ onScrollToForm }: WhyBrendaSectionPro
       id: 'diff-1',
       icon: TrendingUp,
       badge: 'Rendimientos',
-      title: 'Rendimientos del 10%* promedio',
-      desc: 'Sugerimos planes indexados que buscan un desempeño del 10%* anual de histórico promedio, optimizando el crecimiento real de tu dinero.',
-      note: '* Rendimientos basados en portafolios indexados (S&P500). Rendimientos pasados no garantizan futuros.',
-      contrastTitle: 'Bancos / Seguros comunes',
+      title: 'Diferentes alternativas de inversión',
+      desc: 'Dependiendo de tu edad, perfil de inversionista, puedes invertir en diferentes estrategias de inversión. No te quedes limitado a invertir en udis o dólares, hay más alternativas de inversión en fondos indexados.',
+      note: '* Las alternativas sugeridas incluyen portafolios indexados (S&P500). El rendimiento dependerá del perfil y estrategia seleccionada.',
+      contrastTitle: 'Otros PPR',
       contrastDesc: 'Rendimientos bajos (5%-6%) que casi no ganan a la inflación, con comisiones altas.'
     },
     {
       id: 'diff-2',
       icon: Calendar,
       badge: 'Flexibilidad',
-      title: 'Sin plazos forzosos excesivos (18 meses)',
-      desc: 'No te comprometas a plazos de 25 años obligatorios sin salida. Aquí el plazo mínimo inicial es de solo 18 meses, dándote flexibilidad total después.',
+      title: 'Ahorro flexible y adaptable',
+      desc: 'Entre más años inviertas, más dinero tendrás para tu retiro, sin embargo, es muy importante contar con un plan flexible que te permita adaptar tus aportaciones de acuerdo a tu situación.',
       note: '',
-      contrastTitle: 'Planes tradicionales',
+      contrastTitle: 'Otros PPR tradicionales',
       contrastDesc: 'Plazos forzosos sumamente estrictos con penalizaciones muy altas.'
     },
     {
@@ -115,7 +115,7 @@ export default function WhyBrendaSection({ onScrollToForm }: WhyBrendaSectionPro
                   ¿Por qué una asesoría conmigo?
                 </h4>
                 <p className="text-xs text-brand-blue-600/70 leading-relaxed font-sans">
-                  Contratar en el primer banco o con un agente que solo vende su propia marca suele terminar en planes con comisiones ocultas elevadas, contratos con plazos forzosos inviables y nula neutralidad.
+                  Contratar tu PPR requiere una institución confiable, estructura del plan adecuada y un asesor que resuelva todas tus dudas. Compara opciones para evitar comisiones elevadas, contratos forzosos y nula neutralidad.
                 </p>
               </div>
 

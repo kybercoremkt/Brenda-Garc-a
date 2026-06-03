@@ -11,7 +11,7 @@ export default function TargetSeriesSection({ onScrollToForm }: TargetSeriesSect
       id: 'profile-1',
       emoji: '💼',
       title: 'Deducción de Impuestos (ISR)',
-      desc: 'Aprende a deducir legalmente hasta $152,000 MXN anuales de tus aportaciones.'
+      desc: 'Aprende a deducir legalmente hasta $214,000 MXN anuales de tus aportaciones.'
     },
     {
       id: 'profile-2',
@@ -28,7 +28,7 @@ export default function TargetSeriesSection({ onScrollToForm }: TargetSeriesSect
     {
       id: 'profile-4',
       emoji: '⏳',
-      title: 'Edad entre 30 y 49 años',
+      title: 'Edad entre 27 y 49 años',
       desc: 'Aprovecha tu etapa más productiva para acumular un capital blindado.'
     }
   ];

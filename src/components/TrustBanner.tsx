@@ -29,14 +29,14 @@ export default function TrustBanner() {
           {/* Item 2 */}
           <div className="flex items-center space-x-3 justify-center md:justify-start">
             <div className="p-2 sm:p-2.5 bg-brand-blue-50 rounded-lg text-brand-blue-500 shrink-0">
-              <TrendingUp className="w-5.5 h-5.5" />
+              <Award className="w-5.5 h-5.5" />
             </div>
             <div>
               <span className="block font-mono text-xl sm:text-2xl font-bold text-brand-blue-600 leading-none mb-1">
-                +$60 MDP
+                Cédula CNSF
               </span>
               <span className="text-sm text-brand-blue-900/80 font-semibold">
-                Invertidos por clientes
+                Asesoría Certificada
               </span>
             </div>
           </div>
@@ -44,7 +44,7 @@ export default function TrustBanner() {
           {/* Item 3 */}
           <div className="flex items-center space-x-3 justify-center md:justify-start">
             <div className="p-2 sm:p-2.5 bg-brand-blue-50 rounded-lg text-brand-blue-500 shrink-0">
-              <Award className="w-5.5 h-5.5" />
+              <ShieldCheck className="w-5.5 h-5.5" />
             </div>
             <div>
               <span className="block font-mono text-xl sm:text-2xl font-bold text-brand-blue-600 leading-none mb-1">
@@ -59,21 +59,21 @@ export default function TrustBanner() {
           {/* Item 4 */}
           <div className="flex items-center space-x-3 justify-center md:justify-start">
             <div className="p-2 sm:p-2.5 bg-brand-blue-50 rounded-lg text-brand-blue-500 shrink-0">
-              <ShieldCheck className="w-5.5 h-5.5" />
+              <TrendingUp className="w-5.5 h-5.5" />
             </div>
             <div>
               <span className="block font-mono text-xl sm:text-2xl font-bold text-brand-blue-600 leading-none mb-1">
-                10%*
+                S&P 500
               </span>
               <span className="text-sm text-brand-blue-900/80 font-semibold">
-                Rendimiento prom.
+                Fondos Indexados
               </span>
             </div>
           </div>
         </div>
 
         <p className="text-[11px] text-brand-blue-600/70 italic mt-6 text-center max-w-2xl mx-auto leading-normal">
-          * Rendimientos históricos promedio anual de los portafolios indexados de mis clientes, netos de comisiones. Las rentabilidades pasadas no garantizan rendimientos futuros.
+          * Las alternativas de inversión recomendadas incluyen fondos indexados y estrategias diversificadas respaldadas por instituciones financieras autorizadas y reguladas supervisadas por la CNSF.
         </p>
       </div>
     </div>

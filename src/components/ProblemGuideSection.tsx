@@ -22,7 +22,7 @@ export default function ProblemGuideSection({ onScrollToForm }: ProblemGuideSect
         <div className="space-y-10 pb-14 border-b border-slate-100/40">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <h2 className="font-display font-bold text-brand-blue-600 text-2xl sm:text-3xl tracking-tight leading-tight">
-              ¿Sabías que el IMSS solo cubre el 26%?
+              ¿Sabías que el AFORE solo cubre el 26%?
             </h2>
             <p className="text-brand-blue-600/80 text-sm leading-relaxed">
               En promedio, recibirás solo el <span className="font-bold text-rose-600">26% de tu último sueldo</span> al jubilarte. Usa este simulador para estimar el déficit que deberás cubrir por tu cuenta.
@@ -38,7 +38,7 @@ export default function ProblemGuideSection({ onScrollToForm }: ProblemGuideSect
                 <div className="flex items-center space-x-2">
                   <Calculator className="w-4.5 h-4.5 text-brand-blue-500" />
                   <span className="font-display font-bold text-brand-blue-600 text-sm sm:text-base">
-                    Simulador de Brecha IMSS
+                    Simulador de Brecha AFORE
                   </span>
                 </div>
 
@@ -88,7 +88,7 @@ export default function ProblemGuideSection({ onScrollToForm }: ProblemGuideSect
                 
                 <div className="space-y-2.5">
                   <div className="flex justify-between text-xs">
-                    <span className="text-brand-blue-600/70">Pensión IMSS (26%):</span>
+                    <span className="text-brand-blue-600/70">Pensión por AFORE (26%):</span>
                     <span className="font-mono font-bold text-emerald-600">
                       ${pprEstimate.toLocaleString('en-US')}
                     </span>
@@ -110,7 +110,7 @@ export default function ProblemGuideSection({ onScrollToForm }: ProblemGuideSect
 
                 <div className="text-center pt-1.5 bg-rose-50/50 border border-rose-100/30 p-2 rounded-lg">
                   <p className="text-[10px] text-rose-700 font-semibold leading-normal font-sans">
-                    Necesitas un plan privado para complementar la diferencia.
+                    Necesitas un plan personal para el retiro para complementar la diferencia.
                   </p>
                 </div>
               </div>

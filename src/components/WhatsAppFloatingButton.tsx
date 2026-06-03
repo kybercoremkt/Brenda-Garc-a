@@ -66,7 +66,7 @@ export default function WhatsAppFloatingButton({ onSuccessLead }: WhatsAppFloati
 
     // Format WA text
     const textMsg = `Hola Brenda! Me interesa agendar una Asesoría Directa sin costo para diseñar mi Plan Personal de Retiro (PPR). Mi nombre es ${name.trim()} y mi teléfono es ${phone.trim()}. ¡Quedo atento a tus comentarios!`;
-    const waUrl = `https://wa.me/5215512345678?text=${encodeURIComponent(textMsg)}`;
+    const waUrl = `https://wa.me/527293080780?text=${encodeURIComponent(textMsg)}`;
 
     setTimeout(() => {
       // Open WhatsApp
@@ -198,7 +198,7 @@ export default function WhatsAppFloatingButton({ onSuccessLead }: WhatsAppFloati
                           required
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
-                          placeholder="10 dígitos (Ej. 55 1234 5678)"
+                          placeholder="10 dígitos (Ej. 729 308 0780)"
                           className="w-full pl-15 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#075e54]/50 focus:border-[#075e54] transition bg-slate-50/50 text-slate-800 font-mono font-medium"
                         />
                       </div>

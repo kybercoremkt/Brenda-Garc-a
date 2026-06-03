@@ -23,7 +23,7 @@ export default function HeroSection({ onSuccessLead, formRef }: HeroSectionProps
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
             {/* Headline */}
             <h1 className="font-display font-bold text-brand-blue-600 text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-tight">
-              Cotiza tu Plan Personal de <span className="text-brand-blue-500">Retiro privado</span>
+              Plan Personal para el <span className="text-brand-blue-500">Retiro</span>
             </h1>
 
             {/* Subheadline */}
