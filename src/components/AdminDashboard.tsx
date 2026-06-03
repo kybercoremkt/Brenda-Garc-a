@@ -79,7 +79,7 @@ export default function AdminDashboard({ isOpen, onClose, leads, onClearLeads }:
     if (searchQuery.trim() !== '') {
       const q = searchQuery.toLowerCase();
       const matchName = lead.name.toLowerCase().includes(q);
-      const matchEmail = lead.email.toLowerCase().includes(q);
+      const matchEmail = lead.email ? lead.email.toLowerCase().includes(q) : false;
       const matchPhone = lead.phone.includes(q);
       return matchName || matchEmail || matchPhone;
     }
@@ -113,13 +113,13 @@ export default function AdminDashboard({ isOpen, onClose, leads, onClearLeads }:
       new Date(l.timestamp).toLocaleString('es-MX'),
       l.name,
       l.phone,
-      l.email,
-      l.ageRange,
-      l.workHistory,
-      l.taxRegime,
-      l.monthlyBudget,
-      l.selectedTimeSlot,
-      l.status
+      l.email || 'N/A',
+      l.ageRange || 'N/A',
+      l.workHistory || 'N/A',
+      l.taxRegime || 'N/A',
+      l.monthlyBudget || 'N/A',
+      l.selectedTimeSlot || 'N/A',
+      l.status || 'Contacto WhatsApp'
     ]);
 
     const csvContent = "data:text/csv;charset=utf-8,\uFEFF" 
@@ -361,23 +361,37 @@ export default function AdminDashboard({ isOpen, onClose, leads, onClearLeads }:
                         </td>
                         
                         <td className="p-4 space-y-0.5">
-                          <span className="block">{lead.email}</span>
+                          {lead.email ? (
+                            <span className="block text-slate-200">{lead.email}</span>
+                          ) : (
+                            <span className="block text-slate-500 italic">Contacto Rápido WA</span>
+                          )}
                           <span className="block text-slate-500 font-mono">{lead.phone}</span>
                         </td>
 
                         <td className="p-4 space-y-0.5 max-w-[200px] truncate">
-                          <span className="block font-medium">
-                            {lead.taxRegime === 'asalariado_pfae' ? 'Asalariado/PFAE' : lead.taxRegime === 'resico_informal' ? 'Independent/RESICO' : 'No lo sé'}
-                          </span>
-                          <span className="block text-slate-500">
-                            Ahorro: {lead.monthlyBudget === 'menos_2000' ? '< $2,000' : lead.monthlyBudget === '2000_5000' ? '$2k - $5k' : '> $5k'}
-                          </span>
+                          {lead.taxRegime || lead.monthlyBudget ? (
+                            <>
+                              <span className="block font-medium text-slate-300">
+                                {lead.taxRegime === 'asalariado_pfae' ? 'Asalariado/PFAE' : lead.taxRegime === 'resico_informal' ? 'Independent/RESICO' : lead.taxRegime === 'no_lo_se' ? 'No lo sé' : 'N/A'}
+                              </span>
+                              <span className="block text-slate-500">
+                                Ahorro: {lead.monthlyBudget === 'menos_2000' ? '< $2,000' : lead.monthlyBudget === '2000_5000' ? '$2k - $5k' : lead.monthlyBudget === 'mas_5000' ? '> $5k' : 'N/A'}
+                              </span>
+                            </>
+                          ) : (
+                            <span className="text-slate-500 italic block">WhatsApp Directo</span>
+                          )}
                         </td>
 
                         <td className="p-4">
-                          <span className="bg-slate-900 py-1 px-2.5 rounded-md border border-slate-800 text-white font-medium block w-fit">
-                            {lead.selectedTimeSlot === 'lunes_11am' ? 'Lunes 11am' : lead.selectedTimeSlot === 'martes_6pm' ? 'Martes 6pm' : 'Jueves 6pm'}
-                          </span>
+                          {lead.selectedTimeSlot ? (
+                            <span className="bg-slate-900 py-1 px-2.5 rounded-md border border-slate-800 text-white font-medium block w-fit">
+                              {lead.selectedTimeSlot === 'lunes_11am' ? 'Lunes 11am' : lead.selectedTimeSlot === 'martes_6pm' ? 'Martes 6pm' : 'Jueves 6pm'}
+                            </span>
+                          ) : (
+                            <span className="text-slate-500 italic font-mono text-[11px]">No agendado</span>
+                          )}
                         </td>
 
                         <td className="p-4">
@@ -391,10 +405,14 @@ export default function AdminDashboard({ isOpen, onClose, leads, onClearLeads }:
                               <XCircle className="w-3 h-3" />
                               <span>Excl. Edad</span>
                             </span>
-                          ) : (
+                          ) : lead.status === 'disqualified_history' ? (
                             <span className="inline-flex items-center space-x-1 py-0.5 px-2 bg-rose-950 border border-rose-900/30 rounded-full text-rose-400 font-semibold text-[10px]" title="Cotización Pre-1997 IMSS">
                               <XCircle className="w-3 h-3" />
                               <span>Excl. Ley 73</span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center space-x-1 py-0.5 px-2 bg-slate-950 border border-slate-850 rounded-full text-brand-blue-400 font-semibold text-[10px]">
+                              <span>WA Directo</span>
                             </span>
                           )}
                         </td>

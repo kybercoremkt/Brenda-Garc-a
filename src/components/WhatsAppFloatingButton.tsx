@@ -48,13 +48,6 @@ export default function WhatsAppFloatingButton({ onSuccessLead }: WhatsAppFloati
         id: leadData.id,
         name: leadData.name,
         phone: formattedPhone,
-        email: leadData.email,
-        ageRange: leadData.ageRange,
-        workHistory: leadData.workHistory,
-        taxRegime: leadData.taxRegime,
-        monthlyBudget: leadData.monthlyBudget,
-        selectedTimeSlot: leadData.selectedTimeSlot,
-        status: leadData.status,
         timestamp: leadData.timestamp,
         source_type: 'whatsapp_floating_bubble',
       };
@@ -78,13 +71,6 @@ export default function WhatsAppFloatingButton({ onSuccessLead }: WhatsAppFloati
 ID: ${leadData.id}
 Nombre: ${leadData.name}
 WhatsApp (Formato Solicitado): ${formattedPhone}
-Email: ${leadData.email}
-Rango de Edad: ${leadData.ageRange || 'Default'}
-Historial Laboral (Pre-1997): ${leadData.workHistory || 'Default'}
-Régimen Fiscal: ${leadData.taxRegime || 'Default'}
-Presupuesto mensual: ${leadData.monthlyBudget || 'Default'}
-Horario de Webinar: ${leadData.selectedTimeSlot || 'N/A'}
-Status de Calificación: ${leadData.status || 'Default'}
 Fecha: ${new Date(leadData.timestamp).toLocaleString('es-MX')}
 Origen: whatsapp_floating_bubble
 
@@ -105,13 +91,6 @@ Source: ${utmParams.utm_source || 'N/A'}`;
   <li><strong>ID:</strong> ${leadData.id}</li>
   <li><strong>Nombre:</strong> ${leadData.name}</li>
   <li><strong>WhatsApp (Formato Solicitado):</strong> ${formattedPhone}</li>
-  <li><strong>Email:</strong> ${leadData.email}</li>
-  <li><strong>Rango de Edad:</strong> ${leadData.ageRange || 'Default'}</li>
-  <li><strong>Historial Laboral (Pre-1997):</strong> ${leadData.workHistory || 'Default'}</li>
-  <li><strong>Régimen Fiscal:</strong> ${leadData.taxRegime || 'Default'}</li>
-  <li><strong>Presupuesto mensual:</strong> ${leadData.monthlyBudget || 'Default'}</li>
-  <li><strong>Horario de Webinar:</strong> ${leadData.selectedTimeSlot || 'N/A'}</li>
-  <li><strong>Status de Calificación:</strong> ${leadData.status || 'Default'}</li>
   <li><strong>Fecha:</strong> ${new Date(leadData.timestamp).toLocaleString('es-MX')}</li>
   <li><strong>Origen:</strong> whatsapp_floating_bubble</li>
 </ul>
@@ -161,18 +140,11 @@ Source: ${utmParams.utm_source || 'N/A'}`;
       return;
     }
 
-    // Capture standard lead model defaults for consistency in Admin Dashboard
+    // Create a precise WhatsApp contact record with only name, phone, and metadata (no invented data)
     const newLead: LeadRegistration = {
       id: `wa-lead-${Date.now()}`,
       name: name.trim(),
       phone: phone.trim(),
-      email: `${name.trim().toLowerCase().replace(/\s+/g, '_')}@whatsapp.direct`,
-      ageRange: '30_a_49', // default assumptions
-      workHistory: 'despues_1997', // default assumptions
-      taxRegime: 'asalariado_pfae', 
-      monthlyBudget: '2000_5000',
-      selectedTimeSlot: 'martes_6pm',
-      status: 'eligible',
       timestamp: new Date().toISOString()
     };
 
