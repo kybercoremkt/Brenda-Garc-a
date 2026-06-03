@@ -1,4 +1,4 @@
-import React, { useState, useTransition } from 'react';
+import React, { useState, useTransition, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   User, 
@@ -39,6 +39,132 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
   const [isDisqualified, setIsDisqualified] = useState<'none' | 'age' | 'history' | 'budget'>('none');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [registeredLead, setRegisteredLead] = useState<LeadRegistration | null>(null);
+
+  const [utmParams, setUtmParams] = useState({
+    utm_medium: '',
+    utm_campaign: '',
+    utm_content: '',
+    ad: '',
+    adset: '',
+    keyword: '',
+    placement: '',
+    utm_source: '',
+  });
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setUtmParams({
+      utm_medium: params.get('utm_medium') || params.get('medium') || '',
+      utm_campaign: params.get('utm_campaign') || params.get('campaign') || '',
+      utm_content: params.get('utm_content') || params.get('content') || '',
+      ad: params.get('ad') || params.get('utm_ad') || '',
+      adset: params.get('adset') || params.get('utm_adset') || '',
+      keyword: params.get('keyword') || params.get('utm_term') || params.get('utm_keyword') || '',
+      placement: params.get('placement') || params.get('utm_placement') || '',
+      utm_source: params.get('utm_source') || params.get('source') || '',
+    });
+  }, []);
+
+  const sendToWebhook = async (leadData: LeadRegistration) => {
+    try {
+      const cleanDigits = leadData.phone.replace(/\D/g, '').slice(-10);
+      const formattedPhone = `+521${cleanDigits}`;
+
+      const payload: Record<string, any> = {
+        id: leadData.id,
+        name: leadData.name,
+        phone: formattedPhone,
+        email: leadData.email,
+        ageRange: leadData.ageRange,
+        workHistory: leadData.workHistory,
+        taxRegime: leadData.taxRegime,
+        monthlyBudget: leadData.monthlyBudget,
+        selectedTimeSlot: leadData.selectedTimeSlot,
+        status: leadData.status,
+        timestamp: leadData.timestamp,
+        source_type: 'main_form',
+      };
+
+      if (utmParams.utm_medium) payload.utm_medium = utmParams.utm_medium;
+      if (utmParams.utm_campaign) payload.utm_campaign = utmParams.utm_campaign;
+      if (utmParams.utm_content) payload.utm_content = utmParams.utm_content;
+      if (utmParams.ad) payload.ad = utmParams.ad;
+      if (utmParams.adset) payload.adset = utmParams.adset;
+      if (utmParams.keyword) payload.keyword = utmParams.keyword;
+      if (utmParams.placement) payload.placement = utmParams.placement;
+      if (utmParams.utm_source) payload.utm_source = utmParams.utm_source;
+
+      // Add Mailhook compatible fields so that if the user linked a Make Custom Mailhook, it parses perfectly
+      payload.sender = "admin@kybercoremkt.com";
+      payload.from = "admin@kybercoremkt.com";
+      payload.subject = `Nuevo Lead Pre-Calificado: ${leadData.name}`;
+      
+      const emailBodyText = `NUEVO LEAD REGISTRADO - DETALLES COMPLETOS:
+------------------------------------------
+ID: ${leadData.id}
+Nombre: ${leadData.name}
+WhatsApp (Formato Solicitado): ${formattedPhone}
+Email: ${leadData.email}
+Rango de Edad: ${leadData.ageRange}
+Historial Laboral (Pre-1997): ${leadData.workHistory}
+Régimen Fiscal: ${leadData.taxRegime}
+Presupuesto mensual: ${leadData.monthlyBudget}
+Horario de Webinar: ${leadData.selectedTimeSlot}
+Status de Calificación: ${leadData.status}
+Fecha: ${new Date(leadData.timestamp).toLocaleString('es-MX')}
+Origen: main_form
+
+INFORMACIÓN DE TRÁFICO (UTMs):
+------------------------------------------
+Medium: ${utmParams.utm_medium || 'N/A'}
+Campaign: ${utmParams.utm_campaign || 'N/A'}
+Content: ${utmParams.utm_content || 'N/A'}
+Ad: ${utmParams.ad || 'N/A'}
+Adset: ${utmParams.adset || 'N/A'}
+Keyword: ${utmParams.keyword || 'N/A'}
+Placement: ${utmParams.placement || 'N/A'}
+Source: ${utmParams.utm_source || 'N/A'}`;
+
+      payload.text = emailBodyText;
+      payload.html = `<h3>NUEVO LEAD REGISTRADO - DETALLES COMPLETOS:</h3>
+<ul>
+  <li><strong>ID:</strong> ${leadData.id}</li>
+  <li><strong>Nombre:</strong> ${leadData.name}</li>
+  <li><strong>WhatsApp (Formato Solicitado):</strong> ${formattedPhone}</li>
+  <li><strong>Email:</strong> ${leadData.email}</li>
+  <li><strong>Rango de Edad:</strong> ${leadData.ageRange}</li>
+  <li><strong>Historial Laboral (Pre-1997):</strong> ${leadData.workHistory}</li>
+  <li><strong>Régimen Fiscal:</strong> ${leadData.taxRegime}</li>
+  <li><strong>Presupuesto mensual:</strong> ${leadData.monthlyBudget}</li>
+  <li><strong>Horario de Webinar:</strong> ${leadData.selectedTimeSlot}</li>
+  <li><strong>Status de Calificación:</strong> ${leadData.status}</li>
+  <li><strong>Fecha:</strong> ${new Date(leadData.timestamp).toLocaleString('es-MX')}</li>
+  <li><strong>Origen:</strong> main_form</li>
+</ul>
+<h3>INFORMACIÓN DE TRÁFICO (UTMs):</h3>
+<ul>
+  <li><strong>Medium:</strong> ${utmParams.utm_medium || 'N/A'}</li>
+  <li><strong>Campaign:</strong> ${utmParams.utm_campaign || 'N/A'}</li>
+  <li><strong>Content:</strong> ${utmParams.utm_content || 'N/A'}</li>
+  <li><strong>Ad:</strong> ${utmParams.ad || 'N/A'}</li>
+  <li><strong>Adset:</strong> ${utmParams.adset || 'N/A'}</li>
+  <li><strong>Keyword:</strong> ${utmParams.keyword || 'N/A'}</li>
+  <li><strong>Placement:</strong> ${utmParams.placement || 'N/A'}</li>
+  <li><strong>Source:</strong> ${utmParams.utm_source || 'N/A'}</li>
+</ul>`;
+      payload.html_content = payload.html;
+
+      await fetch('https://hook.us2.make.com/x4192as0gdwxkjpingtc5u5gwvwcx9kg', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+    } catch (err) {
+      console.error('Error sending lead to webhook:', err);
+    }
+  };
 
   // Validation functions
   const validateStep1 = () => {
@@ -181,6 +307,9 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
     saveLeadToLocalStorage(finalLead);
     setRegisteredLead(finalLead);
     setIsSubmitted(true);
+    
+    // Send to make webhook asynchronously
+    sendToWebhook(finalLead);
     
     // Smooth redirect to /gracias thank-you subpage
     window.history.pushState({}, '', '/gracias');
@@ -491,6 +620,16 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Hidden inputs to capture traffic context */}
+        <input type="hidden" name="utm_medium" value={utmParams.utm_medium} />
+        <input type="hidden" name="utm_campaign" value={utmParams.utm_campaign} />
+        <input type="hidden" name="utm_content" value={utmParams.utm_content} />
+        <input type="hidden" name="ad" value={utmParams.ad} />
+        <input type="hidden" name="adset" value={utmParams.adset} />
+        <input type="hidden" name="keyword" value={utmParams.keyword} />
+        <input type="hidden" name="placement" value={utmParams.placement} />
+        <input type="hidden" name="utm_source" value={utmParams.utm_source} />
+
         <AnimatePresence mode="wait">
           {step === 1 && (
             <motion.div

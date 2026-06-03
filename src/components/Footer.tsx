@@ -78,7 +78,7 @@ export default function Footer({ onScrollToFaq, onOpenDashboard, leadsCount }: F
                 title="Consola de Leads"
               >
                 <Lock className="w-3 h-3 text-brand-blue-500 shrink-0" />
-                <span>Consola ({leadsCount})</span>
+                <span>Consola</span>
               </button>
             </div>
           </div>

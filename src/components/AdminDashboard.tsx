@@ -1,4 +1,4 @@
-import { useState, useTransition } from 'react';
+import React, { useState, useTransition } from 'react';
 import { motion } from 'motion/react';
 import { 
   X, 
@@ -11,7 +11,10 @@ import {
   Database, 
   Filter,
   RefreshCw,
-  Search
+  Search,
+  Lock,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 import { LeadRegistration } from '../types';
 
@@ -26,6 +29,33 @@ export default function AdminDashboard({ isOpen, onClose, leads, onClearLeads }:
   const [filter, setFilter] = useState<'all' | 'eligible' | 'disqualified_age' | 'disqualified_history'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [, startTransition] = useTransition();
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [passwordField, setPasswordField] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Character-code obfuscator to avoid showing "Brenda123@" as cleartext in the JS bundle source code
+  const verifyCredentials = (input: string): boolean => {
+    const targetCodes = [66, 114, 101, 110, 100, 97, 49, 50, 51, 64];
+    if (input.length !== targetCodes.length) return false;
+    for (let i = 0; i < input.length; i++) {
+      if (input.charCodeAt(i) !== targetCodes[i]) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const handleLoginSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (verifyCredentials(passwordField)) {
+      setIsAuthenticated(true);
+      setPasswordError('');
+    } else {
+      setPasswordError('Contraseña incorrecta. Intenta de nuevo.');
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -138,7 +168,61 @@ export default function AdminDashboard({ isOpen, onClose, leads, onClearLeads }:
         </div>
 
         {/* Scrollable Container */}
-        <div className="p-6 flex-1 overflow-y-auto space-y-6">
+        {!isAuthenticated ? (
+          <div className="p-6 flex-1 flex flex-col items-center justify-center bg-slate-900 text-center max-w-sm mx-auto w-full space-y-6 justify-self-center my-auto">
+            <div className="w-14 h-14 bg-slate-950 border border-slate-850 rounded-2xl flex items-center justify-center text-brand-blue-400 shadow-inner">
+              <Lock className="w-6 h-6 animate-pulse" />
+            </div>
+            
+            <div className="space-y-1.5">
+              <h4 className="font-display font-semibold text-white text-base">Acceso Restringido al CRM</h4>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Esta es la plataforma de pre-calificación confidencial para Brenda García. Ingresa la contraseña de validación.
+              </p>
+            </div>
+
+            <form onSubmit={handleLoginSubmit} className="w-full space-y-3">
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Contraseña del Administrador"
+                  value={passwordField}
+                  onChange={(e) => setPasswordField(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-850 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-brand-blue-500 pr-10"
+                  autoFocus
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-3 text-slate-500 hover:text-slate-350 cursor-pointer"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+
+              {passwordError && (
+                <p className="text-[11px] text-rose-500 font-semibold text-center leading-normal">
+                  ⚠️ {passwordError}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                className="w-full bg-brand-blue-500 hover:bg-brand-blue-600 text-white font-semibold py-2.5 px-5 rounded-xl text-xs transition duration-150 shadow-md shadow-brand-blue-500/10 cursor-pointer text-center"
+              >
+                Iniciar Sesión de Consola
+              </button>
+            </form>
+
+            <button
+              onClick={onClose}
+              className="text-xs text-slate-500 hover:text-slate-400 underline transition cursor-pointer"
+            >
+              Regresar a la página principal
+            </button>
+          </div>
+        ) : (
+          <div className="p-6 flex-1 overflow-y-auto space-y-6">
           
           {/* Metrics Bento Row */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -323,6 +407,7 @@ export default function AdminDashboard({ isOpen, onClose, leads, onClearLeads }:
           </div>
 
         </div>
+        )}
 
         {/* Footer */}
         <div className="p-4 border-t border-slate-800 bg-[#020509] flex justify-between items-center text-slate-500 text-[11px] font-mono">
