@@ -264,8 +264,6 @@ Source: ${utmParams.utm_source || 'N/A'}`;
       // Move to step 3 if not disqualified
       if (ageRange === 'más_de_50') {
         triggerDisqualification('age');
-      } else if (workHistory === 'antes_1997') {
-        triggerDisqualification('history');
       } else {
         setStep(3);
       }
