@@ -44,21 +44,21 @@ export default function HeroSection({ onSuccessLead, formRef }: HeroSectionProps
                className="relative mt-8 mx-auto lg:mx-0 w-full max-w-xl rounded-2xl overflow-hidden border border-slate-100/80 shadow-md bg-white"
             >
               <img 
-                src="https://i.ibb.co/STrfSY7/1dea2c18b4178f76576092847fc02d76c057987f.png" 
+                src="https://i.ibb.co/5W9r0VLm/Untitled-design-1.png" 
                 alt="Brenda García - Tu Asesora Patrimonial"
                 className="w-full h-auto object-contain block"
                 referrerPolicy="no-referrer"
               />
               
-              {/* Overlaid visual value cards on the desk area - hidden on mobile so they don't cover her portrait */}
-              <div className="hidden sm:grid absolute bottom-4 left-4 right-4 grid-cols-2 gap-3 pointer-events-none z-20">
-                <div className="bg-white/95 backdrop-blur-xs border border-brand-blue-100/40 rounded-xl p-3 shadow-md text-center flex flex-col justify-center">
-                  <span className="block text-brand-blue-600 font-bold text-xs sm:text-sm font-display">Asesoría 100% Neutral</span>
-                  <span className="text-[10px] sm:text-xs text-brand-blue-600/75 block mt-0.5 leading-tight font-medium">Sin exclusividad de marca</span>
+              {/* Overlaid visual value cards on the white space area of the image */}
+              <div className="absolute top-4 left-4 right-4 grid grid-cols-2 gap-3 pointer-events-none z-20">
+                <div className="bg-white/95 backdrop-blur-xs border border-brand-blue-100/40 rounded-xl p-2 sm:p-3 shadow-md text-center flex flex-col justify-center">
+                  <span className="block text-brand-blue-600 font-bold text-[10px] sm:text-xs md:text-sm font-display leading-tight">Asesoría 100% Neutral</span>
+                  <span className="text-[8px] sm:text-[10px] md:text-xs text-brand-blue-600/75 block mt-0.5 leading-tight font-medium">Sin exclusividad de marca</span>
                 </div>
-                <div className="bg-white/95 backdrop-blur-xs border border-brand-blue-100/40 rounded-xl p-3 shadow-md text-center flex flex-col justify-center">
-                  <span className="block text-brand-blue-600 font-bold text-xs sm:text-sm font-display">Estudio Personalizado</span>
-                  <span className="text-[10px] sm:text-xs text-brand-blue-600/75 block mt-0.5 leading-tight font-medium">Optimizado para tus metas</span>
+                <div className="bg-white/95 backdrop-blur-xs border border-brand-blue-100/40 rounded-xl p-2 sm:p-3 shadow-md text-center flex flex-col justify-center">
+                  <span className="block text-brand-blue-600 font-bold text-[10px] sm:text-xs md:text-sm font-display leading-tight">Estudio Personalizado</span>
+                  <span className="text-[8px] sm:text-[10px] md:text-xs text-brand-blue-600/75 block mt-0.5 leading-tight font-medium">Optimizado para tus metas</span>
                 </div>
               </div>
             </motion.div>

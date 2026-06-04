@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Calculator, CalendarClock, ChevronRight, CheckCircle2 } from 'lucide-react';
 
-const brendaPortrait = "https://i.ibb.co/M5WjNQqD/app-1.png";
+const brendaPortrait = "https://i.ibb.co/LDyJ1k3b/app-3.png";
 
 interface ProblemGuideSectionProps {
   onScrollToForm: () => void;
