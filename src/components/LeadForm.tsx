@@ -30,7 +30,7 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [ageRange, setAgeRange] = useState<LeadRegistration['ageRange'] | ''>('');
-  const [workHistory, setWorkHistory] = useState<LeadRegistration['workHistory'] | ''>('');
+  const [workHistory, setWorkHistory] = useState<LeadRegistration['workHistory'] | ''>('despues_1997');
   const [taxRegime, setTaxRegime] = useState<LeadRegistration['taxRegime'] | ''>('');
   const [monthlyBudget, setMonthlyBudget] = useState<LeadRegistration['monthlyBudget'] | ''>('');
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<LeadRegistration['selectedTimeSlot'] | ''>('');
@@ -193,7 +193,6 @@ Source: ${utmParams.utm_source || 'N/A'}`;
   const validateStep2 = () => {
     const tempErrors: Record<string, string> = {};
     if (!ageRange) tempErrors.ageRange = 'Selecciona tu rango de edad';
-    if (!workHistory) tempErrors.workHistory = 'Selecciona tu historial laboral';
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
@@ -233,7 +232,7 @@ Source: ${utmParams.utm_source || 'N/A'}`;
       name: name || 'Interesado Anónimo',
       phone: phone || '',
       email: email || '',
-      ageRange: reason === 'age' ? 'más_de_50' : (ageRange || '30_a_49'),
+      ageRange: reason === 'age' ? 'más_de_50' : (ageRange || '40_a_49'),
       workHistory: reason === 'history' ? 'antes_1997' : (workHistory || 'despues_1997'),
       taxRegime: taxRegime || 'no_lo_se',
       monthlyBudget: reason === 'budget' ? 'menos_2000' : (monthlyBudget || 'menos_2000'),
@@ -710,7 +709,8 @@ Source: ${utmParams.utm_source || 'N/A'}`;
                 <div className="grid grid-cols-1 gap-2" role="group" aria-labelledby="age_section_label">
                   {[
                     { value: '18_a_29', label: '18 a 29 años' },
-                    { value: '30_a_49', label: '30 a 49 años' },
+                    { value: '30_a_39', label: '30 a 39 años' },
+                    { value: '40_a_49', label: '40 a 49 años' },
                     { value: 'más_de_50', label: 'Más de 50 años' },
                   ].map((option) => (
                     <button
@@ -735,39 +735,6 @@ Source: ${utmParams.utm_source || 'N/A'}`;
                   ))}
                 </div>
                 {errors.ageRange && <p className="text-rose-600 text-xs mt-1 font-semibold">{errors.ageRange}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-700 block uppercase tracking-wider ml-1" id="history_section_label">
-                  ¿Comenzaste a trabajar formalmente antes o después del 1° de julio de 1997?
-                </label>
-                <div className="grid grid-cols-1 gap-2" role="group" aria-labelledby="history_section_label">
-                  {[
-                    { value: 'despues_1997', label: 'Después del 1 de julio de 1997' },
-                    { value: 'antes_1997', label: 'Antes del 1 de julio de 1997 (Ley 73 IMSS)' },
-                  ].map((option) => (
-                    <button
-                      key={option.value}
-                      type="button"
-                      onClick={() => handleHistoryChange(option.value as LeadRegistration['workHistory'])}
-                      className={`w-full text-left p-3.5 rounded-xl border transition-all duration-200 text-sm font-medium ${
-                        workHistory === option.value
-                          ? 'bg-brand-blue-50/70 border-brand-blue-500 text-brand-blue-700 shadow-sm'
-                          : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-100/30'
-                      }`}
-                    >
-                      <div className="flex justify-between items-center">
-                        <span className={workHistory === option.value ? "font-bold text-slate-900" : ""}>{option.label}</span>
-                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
-                          workHistory === option.value ? 'border-brand-blue-400 bg-brand-blue-500' : 'border-slate-300'
-                        }`}>
-                          {workHistory === option.value && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-                        </div>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-                {errors.workHistory && <p className="text-rose-600 text-xs mt-1 font-semibold">{errors.workHistory}</p>}
               </div>
             </motion.div>
           )}
@@ -878,35 +845,50 @@ Source: ${utmParams.utm_source || 'N/A'}`;
                   Selecciona una opción de horario:
                 </label>
                 <div className="grid grid-cols-1 gap-2" role="group" aria-labelledby="time_section_label">
-                  {[
-                    { value: 'lunes_11am', day: 'Lunes', time: '11:00 AM (Central Mx)' },
-                    { value: 'martes_6pm', day: 'Martes', time: '6:00 PM (Central Mx)' },
-                    { value: 'jueves_6pm', day: 'Jueves', time: '6:00 PM (Central Mx)' }
-                  ].map((option) => {
-                    // Calculate exact dynamic date label for the weekday
-                    let targetDay = 1; // 1 = Monday
-                    let targetHour = 11;
-                    if (option.value === 'martes_6pm') {
-                      targetDay = 2; // Tuesday
-                      targetHour = 18;
-                    } else if (option.value === 'jueves_6pm') {
-                      targetDay = 4; // Thursday
-                      targetHour = 18;
-                    }
-                    const now = new Date();
-                    const resultDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                    const currentDay = resultDate.getDay();
-                    let daysToAdd = (targetDay - currentDay + 7) % 7;
-                    if (daysToAdd === 0 && now.getHours() >= targetHour) {
-                      daysToAdd = 7;
-                    }
-                    resultDate.setDate(resultDate.getDate() + daysToAdd);
-                    const dayNum = resultDate.getDate();
-                    const monthRaw = resultDate.toLocaleDateString('es-MX', { month: 'long' });
-                    const formattedMonth = monthRaw.charAt(0).toUpperCase() + monthRaw.slice(1);
-                    const dynamicDayLabel = `${option.day} ${dayNum} de ${formattedMonth}`;
+                  {(() => {
+                    const optionsList = [
+                      { value: 'lunes_11am', day: 'Lunes', time: '11:00 AM (Central Mx)' },
+                      { value: 'martes_6pm', day: 'Martes', time: '6:00 PM (Central Mx)' },
+                      { value: 'jueves_6pm', day: 'Jueves', time: '6:00 PM (Central Mx)' }
+                    ];
 
-                    return (
+                    const optionsWithDates = optionsList.map((option) => {
+                      let targetDay = 1; // 1 = Monday
+                      let targetHour = 11;
+                      if (option.value === 'martes_6pm') {
+                        targetDay = 2; // Tuesday
+                        targetHour = 18;
+                      } else if (option.value === 'jueves_6pm') {
+                        targetDay = 4; // Thursday
+                        targetHour = 18;
+                      }
+
+                      const now = new Date();
+                      const resultDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                      const currentDay = resultDate.getDay();
+                      let daysToAdd = (targetDay - currentDay + 7) % 7;
+                      if (daysToAdd === 0 && now.getHours() >= targetHour) {
+                        daysToAdd = 7;
+                      }
+                      resultDate.setDate(resultDate.getDate() + daysToAdd);
+                      resultDate.setHours(targetHour, 0, 0, 0);
+
+                      const dayNum = resultDate.getDate();
+                      const monthRaw = resultDate.toLocaleDateString('es-MX', { month: 'long' });
+                      const formattedMonth = monthRaw.charAt(0).toUpperCase() + monthRaw.slice(1);
+                      const dynamicDayLabel = `${option.day} ${dayNum} de ${formattedMonth}`;
+
+                      return {
+                        ...option,
+                        timestamp: resultDate.getTime(),
+                        dynamicDayLabel
+                      };
+                    });
+
+                    // Sort options chronologically (from nearest to furthest)
+                    const sortedOptions = [...optionsWithDates].sort((a, b) => a.timestamp - b.timestamp);
+
+                    return sortedOptions.map((option) => (
                       <button
                         key={option.value}
                         type="button"
@@ -924,7 +906,7 @@ Source: ${utmParams.utm_source || 'N/A'}`;
                           <div className="flex items-center space-x-3">
                             <Clock className={`w-4 h-4 ${selectedTimeSlot === option.value ? 'text-brand-blue-600' : 'text-slate-400'}`} />
                             <div>
-                              <span className="block text-sm font-bold text-slate-900">{dynamicDayLabel}</span>
+                              <span className="block text-sm font-bold text-slate-900">{option.dynamicDayLabel}</span>
                               <span className="block text-xs text-slate-500">{option.time}</span>
                             </div>
                           </div>
@@ -935,8 +917,8 @@ Source: ${utmParams.utm_source || 'N/A'}`;
                           </div>
                         </div>
                       </button>
-                    );
-                  })}
+                    ));
+                  })()}
                 </div>
                 {errors.selectedTimeSlot && <p className="text-rose-600 text-xs mt-1 font-semibold">{errors.selectedTimeSlot}</p>}
               </div>

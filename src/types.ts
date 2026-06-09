@@ -3,7 +3,7 @@ export interface LeadRegistration {
   name: string;
   phone: string;
   email?: string;
-  ageRange?: 'más_de_50' | '30_a_49' | '18_a_29';
+  ageRange?: 'más_de_50' | '40_a_49' | '30_a_39' | '30_a_49' | '18_a_29';
   workHistory?: 'antes_1997' | 'despues_1997';
   taxRegime?: 'asalariado_pfae' | 'resico_informal' | 'no_lo_se';
   monthlyBudget?: 'menos_2000' | '2000_5000' | 'mas_5000';
