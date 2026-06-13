@@ -31,7 +31,7 @@ export default function LinksPage({ onBackToHome }: LinksPageProps) {
       id: 'whatsapp-taller',
       title: 'Inscríbete al taller gratuito Retiro Millonario',
       subtitle: 'Taller virtual • Multiplica tu dinero 💰',
-      url: 'https://api.whatsapp.com/send/?phone=527293080780&text&type=phone_number&app_absent=0',
+      url: 'https://api.whatsapp.com/send/?phone=527293080780&text=Quiero%20inscribirme%20al%20taller%20%22Retiro%20Millonario%22',
       isPrimary: true,
       icon: (
         <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center shrink-0 shadow-sm text-white">
@@ -163,7 +163,7 @@ export default function LinksPage({ onBackToHome }: LinksPageProps) {
             </svg>
           </h1>
           <p className="text-xs font-mono font-bold text-brand-blue-500 uppercase tracking-widest mt-1">
-            Especialista En Retiro
+            Especialista en Planes Personales para el Retiro
           </p>
 
           {/* User Request Multiplicador Header banner */}
