@@ -12,6 +12,7 @@ import Footer from './components/Footer';
 import AdminDashboard from './components/AdminDashboard';
 import WhatsAppFloatingButton from './components/WhatsAppFloatingButton';
 import GraciasPage from './components/GraciasPage';
+import LinksPage from './components/LinksPage';
 import { LeadRegistration } from './types';
 
 export default function App() {
@@ -70,6 +71,17 @@ export default function App() {
 
   if (currentPath === '/gracias') {
     return <GraciasPage />;
+  }
+
+  if (currentPath === '/links') {
+    return (
+      <LinksPage 
+        onBackToHome={() => {
+          window.history.pushState({}, '', '/');
+          setCurrentPath('/');
+        }} 
+      />
+    );
   }
 
   return (

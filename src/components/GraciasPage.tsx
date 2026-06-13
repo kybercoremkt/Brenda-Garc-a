@@ -309,7 +309,7 @@ export default function GraciasPage() {
             {/* Iframe viewport */}
             <div className="flex-grow bg-white">
               <iframe 
-                src="https://cal.com/kybercore/secret" 
+                src="https://cal.com/brendagarcia.mx/15min" 
                 title="Cal.com Quick Scheduler"
                 className="w-full h-full border-0"
                 allow="camera; microphone; autoplay; clipboard-write"
